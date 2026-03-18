@@ -1,6 +1,6 @@
 {
-  "name": "fsevents",
-  "version": "2.3.3",
+  "name": "@electron/fsevents",
+  "version": "2.3.3-fork",
   "description": "Native Access to MacOS FSEvents",
   "main": "fsevents.js",
   "types": "fsevents.d.ts",
@@ -15,15 +15,9 @@
   "engines": {
     "node": "^8.16.0 || ^10.6.0 || >=11.0.0"
   },
-  "scripts": {
-    "clean": "node-gyp clean && rm -f fsevents.node",
-    "build": "node-gyp clean && rm -f fsevents.node && node-gyp rebuild && node-gyp clean",
-    "test": "/bin/bash ./test.sh 2>/dev/null",
-    "prepublishOnly": "npm run build"
-  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/fsevents/fsevents.git"
+    "url": "git+https://github.com/dsanders11/fsevents.git"
   },
   "keywords": [
     "fsevents",
@@ -53,10 +47,7 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fsevents/fsevents/issues"
+    "url": "https://github.com/electron/fsevents/issues"
   },
-  "homepage": "https://github.com/fsevents/fsevents",
-  "devDependencies": {
-    "node-gyp": "^9.4.0"
-  }
+  "homepage": "https://github.com/electron/fsevents"
 }
