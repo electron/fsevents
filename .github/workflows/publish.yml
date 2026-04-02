@@ -3,14 +3,21 @@ on:
   push:
     branches:
     - master
+
+permissions: {}
+
 jobs:
   publish:
     runs-on: macos-latest
+    permissions:
+      contents: write
     steps:
     - name: checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
+      with:
+        persist-credentials: false
     - name: node v18
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@f1f314fca9dfce2769ece7d933488f076716723e # v1
       with:
         node-version: 18
     - name: npm install, build, and test
@@ -27,17 +34,15 @@ jobs:
         file fsevents.node | grep -q x86_64 || (echo "x86_64 binary not built"; exit 1)
     - id: publish
       name: npm publish
-      uses: JS-DevTools/npm-publish@v1
+      uses: JS-DevTools/npm-publish@0f451a94170d1699fd50710966d48fb26194d939 # v1
       with:
         token: ${{ secrets.NPM_TOKEN }}
     - if: steps.publish.outputs.type != 'none'
       name: github release
-      uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: v${{ steps.publish.outputs.version }}
-        release_name: Release v${{ steps.publish.outputs.version }}
-        body: Released to npm as v${{ steps.publish.outputs.version }}
-        draft: false
-        prerelease: false
+        VERSION: ${{ steps.publish.outputs.version }}
+      run: |
+        gh release create "v${VERSION}" \
+          --title "Release v${VERSION}" \
+          --notes "Released to npm as v${VERSION}"

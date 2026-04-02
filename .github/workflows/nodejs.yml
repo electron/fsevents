@@ -7,6 +7,9 @@ on:
   pull_request:
     branches:
     - 'master'
+
+permissions: {}
+
 jobs:
   build:
     runs-on: macos-latest
@@ -15,9 +18,11 @@ jobs:
         node-version: [18,20]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
+      with:
+        persist-credentials: false
     - name: Node v${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@f1f314fca9dfce2769ece7d933488f076716723e # v1
       with:
         node-version: ${{ matrix.node-version }}
     - name: npm install, build, and test
@@ -31,7 +36,7 @@ jobs:
         file fsevents.node | grep -q arm64 || (echo "arm64 binary not built"; exit 1)
         file fsevents.node | grep -q x86_64 || (echo "x86_64 binary not built"; exit 1)
     - name: Upload binary
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@82c141cc518b40d92cc801eee768e7aafc9c2fa2 # v2
       with:
         name: binary
         path: fsevents.node
@@ -46,16 +51,18 @@ jobs:
         node-version: [18,20]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
+      with:
+        persist-credentials: false
     - name: Node v${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@f1f314fca9dfce2769ece7d933488f076716723e # v1
       with:
         node-version: ${{ matrix.node-version }}
     - name: npm install
       run: |
         npm install --ignore-scripts
     - name: Download universal binary
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@cbed621e49e4c01b044d60f6c80ea4ed6328b281 # v2
       with:
         name: binary
     - name: ensure universal binary (arm64/x86_64)
